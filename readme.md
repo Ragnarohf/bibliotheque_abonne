@@ -99,7 +99,7 @@ return $this->redirectToRoute('app_register');
 }
 </pre></code>
 
-## RegistrationFormType : ajout des elements de formulaire qui me manque(ex:fistName,lastName...)
+## RegistrationFormType : ajout des elements de formulaire qui me manque(ex:firstName,lastName...)
 
 - `->add('firstName')`
 
@@ -175,5 +175,6 @@ if($form->get('plainPassword')->getData() === $form->get('confirmPassword')->get
 
 {% block body %}
 {% if passError is defined %}
+
 <div class="alert alert-danger" role="alert">{{ passError }}</div>
 {% endif %}
