@@ -9,7 +9,7 @@
 			{% endblock %}
 		</title>
 		{# Run `composer require symfony/webpack-encore-bundle`
-																		           and uncomment the following Encore helpers to start using Symfony UX #}
+																				           and uncomment the following Encore helpers to start using Symfony UX #}
 		{% block stylesheets %}
 			{#{{ encore_entry_link_tags('app') }}#}
 		{% endblock %}
@@ -41,14 +41,14 @@
 							</li>
 							<li class="nav-item">
 								<a class="nav-link" href="{{path('emprunt_index')}}">Emprunts</a>
-
-
 							</li>
-
 							<li class="nav-item">
 								<a class="nav-link" href="{{path('livre_index')}}">Livre</a>
-
 							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="{{path('user_index')}}">User</a>
+							</li>
+
 
 						{% else %}
 							<li class="nav-item">
@@ -59,11 +59,11 @@
 							</li>
 						{% endif %}
 						{# {% if is_granted('ROLE_ADMIN')%}
-													<li class="nav-item">
-														<a class="nav-link" href="{{path('admin')}}">Administration</a>
-															</li>
-																														
-															{% endif %} #}
+																			<li class="nav-item">
+																				<a class="nav-link" href="{{path('admin')}}">Administration</a>
+																					</li>
+																																				
+																					{% endif %} #}
 
 					</ul>
 
