@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Emprunt;
 use App\Form\EmpruntType;
 use App\Repository\EmpruntRepository;
+use App\Repository\LivreRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,10 +20,20 @@ class EmpruntController extends AbstractController
     /**
      * @Route("/", name="emprunt_index", methods={"GET"})
      */
-    public function index(EmpruntRepository $empruntRepository): Response
+    public function index(EmpruntRepository $empruntRepository, LivreRepository $livreRepository, UserRepository $userRepository): Response
     {
+        $tbemprunt = $empruntRepository->findAll();
+
+        foreach ($tbemprunt as $key => $value) {
+            $prenom = $userRepository->findBy(['id' => $value->getUser()->getId()]);
+            dump($prenom);
+            $titre = $livreRepository->findBy(['id' => $value->getLivre()->getId()]);
+            $tbemprunt[$key] = ['prenom' => $prenom];
+            $tbemprunt[$key] = ['titre' => $titre];
+        }
         return $this->render('emprunt/index.html.twig', [
-            'emprunts' => $empruntRepository->findAll(),
+            'emprunts' => $tbemprunt,
+
         ]);
     }
 
@@ -35,6 +47,9 @@ class EmpruntController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $emprunt->setDateSortie(new \DateTime('now'));
+            $emprunt->setUser($this->getuser());
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($emprunt);
             $entityManager->flush();
@@ -83,7 +98,7 @@ class EmpruntController extends AbstractController
      */
     public function delete(Request $request, Emprunt $emprunt): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$emprunt->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $emprunt->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($emprunt);
             $entityManager->flush();
